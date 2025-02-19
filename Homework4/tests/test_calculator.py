@@ -1,59 +1,67 @@
-"""
-Unit tests for the Calculator class using Faker for test data.
-"""
-# pylint: disable=invalid-name
-
+'''Unit tests for the Calculator class using Faker for test data'''
 import pytest
 from faker import Faker
 from Calculator.calculator import Calculator
 from Calculator.calculations import Calculations
 
-fake = Faker()
+fake_data_generator = Faker()
 
 
 @pytest.fixture(autouse=True)
-def clear_history():
-    """Clear calculation history before each test."""
+def reset_history():
+    """Reset calculation history before each test."""
     Calculations.clear_history()
 
 
 @pytest.mark.parametrize(
-    "a, b",
-    [(fake.random_int(min=-100, max=100), fake.random_int(min=-100, max=100)) for _ in range(5)],
+    "operand_1, operand_2",
+    [
+    (fake_data_generator.random_int(min=-150, max=150),
+    fake_data_generator.random_int(min=-150, max=150)) for _ in range(5)
+    ],
 )
-def test_add(a, b):
-    """Test addition with Faker-generated inputs."""
-    assert Calculator.add(a, b) == a + b
+def test_addition(operand_1, operand_2):
+    """Test the addition operation with Faker-generated numbers."""
+    assert Calculator.add(operand_1, operand_2) == operand_1 + operand_2
 
 
 @pytest.mark.parametrize(
-    "a, b",
-    [(fake.random_int(min=-100, max=100), fake.random_int(min=-100, max=100)) for _ in range(5)],
+    "operand_1, operand_2",
+    [
+    (fake_data_generator.random_int(min=-150, max=150),
+    fake_data_generator.random_int(min=-150, max=150)) for _ in range(5)
+    ],
 )
-def test_subtract(a, b):
-    """Test subtraction with Faker-generated inputs."""
-    assert Calculator.subtract(a, b) == a - b
+def test_subtraction(operand_1, operand_2):
+    """Test the subtraction operation with Faker-generated numbers."""
+    assert Calculator.subtract(operand_1, operand_2) == operand_1 - operand_2
 
 
 @pytest.mark.parametrize(
-    "a, b",
-    [(fake.random_int(min=-100, max=100), fake.random_int(min=-100, max=100)) for _ in range(5)],
+    "operand_1, operand_2",
+    [
+    (fake_data_generator.random_int(min=-150, max=150),
+    fake_data_generator.random_int(min=-150, max=150)) for _ in range(5)
+    ],
 )
-def test_multiply(a, b):
-    """Test multiplication with Faker-generated inputs."""
-    assert Calculator.multiply(a, b) == a * b
+def test_multiplication(operand_1, operand_2):
+    """Test the multiplication operation with Faker-generated numbers."""
+    assert Calculator.multiply(operand_1, operand_2) == operand_1 * operand_2
 
 
 @pytest.mark.parametrize(
-    "a, b",
-    [(fake.random_int(min=1, max=100), fake.random_int(min=1, max=100)) for _ in range(5)],
+    "operand_1, operand_2",
+    [
+    (fake_data_generator.random_int(min=1, max=150),
+    fake_data_generator.random_int(min=1, max=150)) for _ in range(5)
+    ],
 )
-def test_divide(a, b):
-    """Test division with Faker-generated inputs."""
-    assert Calculator.divide(a, b) == a / b
+def test_division(operand_1, operand_2):
+    """Test the division operation with Faker-generated numbers."""
+    assert Calculator.divide(operand_1, operand_2) == operand_1 / operand_2
 
 
-def test_divide_by_zero():
-    """Test division by zero raises an exception."""
+def test_zero_division():
+    """Test that division by zero raises an exception."""
     with pytest.raises(ZeroDivisionError):
-        Calculator.divide(fake.random_int(min=1, max=100), 0)
+        Calculator.divide(fake_data_generator.random_int(min=1, max=150), 0)

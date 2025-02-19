@@ -1,50 +1,49 @@
 """
-Module for storing individual calculations.
+Module for performing arithmetic calculations and storing results.
 """
 
 from typing import Callable
 
 
 class Calculation:
-    """Represents a single arithmetic calculation."""
-
-    def __init__(self, operation: Callable[[float, float], float], a: float, b: float):
+    """Represents a single calculation for an arithmetic operation."""
+    def __init__(self, operation: Callable[[float, float], float], num1: float, num2: float):
         """
-        Initializes a Calculation instance.
+        Initializes a Calculation object.
 
         :param operation: A function representing the arithmetic operation.
-        :param a: First operand (must be float or int).
-        :param b: Second operand (must be float or int).
+        :param num1: First number (int or float).
+        :param num2: Second number (int or float).
         """
-        if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
-            raise TypeError("Operands must be int or float")
+        if not isinstance(num1, (int, float)) or not isinstance(num2, (int, float)):
+            raise TypeError("Both numbers must be of type int or float")
 
         self.operation = operation
-        self.a = a
-        self.b = b
+        self.first_number = num1
+        self.second_number = num2
 
         try:
-            self.result = self.operation(self.a, self.b)
+            self.result = self.operation(self.first_number, self.second_number)
         except ZeroDivisionError:
-            self.result = float('inf')  # Return infinity for division by zero
+            self.result = float('inf')  # Handle division by zero gracefully
 
     def get_result(self) -> float:
-        """Returns the result of the calculation."""
+        """Returns the computed result of the calculation."""
         return self.result
 
     def __repr__(self):
-        """Returns a string representation of the calculation."""
-        op_name = self.operation.__name__ if hasattr(self.operation, '__name__') else "unknown_op"
-        return f"Calculation({self.a} {op_name} {self.b} = {self.result})"
+        """Returns a readable string representation of the calculation."""
+        operation_name = self.operation.__name__ if hasattr(self.operation, '__name__') else "undefined_operation"
+        return f"Calculation({self.first_number} {operation_name} {self.second_number} = {self.result})"
 
     @staticmethod
     def from_tuple(data: tuple):
         """
-        Creates a Calculation instance from a tuple.
+        Creates a Calculation object from a tuple.
 
-        :param data: Tuple in the format (operation, a, b)
+        :param data: Tuple in the format (operation, num1, num2)
         :return: Calculation instance
         """
         if not isinstance(data, tuple) or len(data) != 3:
-            raise ValueError("Tuple must contain exactly three elements: (operation, a, b)")
+            raise ValueError("Tuple must contain exactly three elements: (operation, num1, num2)")
         return Calculation(*data)

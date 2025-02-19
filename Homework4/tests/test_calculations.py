@@ -1,5 +1,5 @@
 """
-Unit tests for the Calculations class.
+Unit tests for the Calculations class and its methods.
 """
 import operator
 from Calculator.calculations import Calculations
@@ -7,70 +7,70 @@ from Calculator.calculation import Calculation
 
 
 def setup_function():
-    """Clear history before each test."""
+    """Reset history before each test."""
     Calculations.clear_history()
 
 
 def test_add_calculation():
-    """Test adding a calculation to history."""
-    calc = Calculation(operator.add, 2, 3)
+    """Verify that a calculation is added to the history correctly."""
+    calc = Calculation(operator.add, 5, 7)
     Calculations.add_calculation(calc)
     assert len(Calculations.get_history()) == 1
-    assert Calculations.get_history()[0].get_result() == 5
+    assert Calculations.get_history()[0].get_result() == 12
 
 
 def test_clear_history():
-    """Test clearing history."""
-    Calculations.add_calculation(Calculation(operator.mul, 4, 5))
+    """Verify that history can be cleared."""
+    Calculations.add_calculation(Calculation(operator.mul, 2, 8))
     Calculations.clear_history()
     assert len(Calculations.get_history()) == 0
 
 
 def test_get_history():
-    """Test retrieving the history of calculations."""
-    calc1 = Calculation(operator.add, 1, 1)
-    calc2 = Calculation(operator.mul, 2, 3)
+    """Verify that the history of calculations is correctly retrieved."""
+    calc1 = Calculation(operator.add, 3, 2)
+    calc2 = Calculation(operator.mul, 4, 5)
     Calculations.add_calculation(calc1)
     Calculations.add_calculation(calc2)
 
     history = Calculations.get_history()
     assert len(history) == 2
-    assert history[0].get_result() == 2
-    assert history[1].get_result() == 6
+    assert history[0].get_result() == 5
+    assert history[1].get_result() == 20
 
 
 def test_get_last_calculation():
-    """Test retrieving the last calculation."""
-    calc1 = Calculation(operator.sub, 5, 3)
-    calc2 = Calculation(operator.truediv, 10, 2)
+    """Ensure the last calculation is retrieved correctly."""
+    calc1 = Calculation(operator.sub, 9, 4)
+    calc2 = Calculation(operator.truediv, 8, 2)
     Calculations.add_calculation(calc1)
     Calculations.add_calculation(calc2)
 
     last_calc = Calculations.get_last_calculation()
-    assert last_calc.get_result() == 5.0  # 10 / 2
+    assert last_calc.get_result() == 4.0  # 8 / 2
 
 
 def test_get_last_calculation_empty():
-    """Test getting last calculation when history is empty."""
+    """Ensure None is returned when history is empty."""
     assert Calculations.get_last_calculation() is None
 
 
 def test_get_history_length():
-    """Test retrieving the number of calculations in history."""
+    """Ensure the history length is calculated correctly."""
     assert Calculations.get_history_length() == 0  # Empty initially
 
-    Calculations.add_calculation(Calculation(operator.sub, 8, 4))
+    Calculations.add_calculation(Calculation(operator.sub, 10, 5))
     assert Calculations.get_history_length() == 1
 
-    Calculations.add_calculation(Calculation(operator.mul, 6, 2))
+    Calculations.add_calculation(Calculation(operator.mul, 7, 3))
     assert Calculations.get_history_length() == 2
 
 
 def test_is_history_empty():
-    """Test checking if history is empty."""
+    """Ensure the history empty check works as expected."""
     assert Calculations.is_history_empty() is True  # Initially empty
 
-    Calculations.add_calculation(Calculation(operator.add, 2, 3))
+    Calculations.add_calculation(Calculation(operator.add, 9, 2))
     assert Calculations.is_history_empty() is False  # Now it has one item
 
     Calculations.clear_history()
@@ -78,24 +78,24 @@ def test_is_history_empty():
 
 
 def test_calculation_persistence():
-    """Test that calculations persist correctly in history."""
-    calc1 = Calculation(operator.add, 1, 2)
-    calc2 = Calculation(operator.mul, 3, 4)
+    """Ensure that calculations persist correctly in the history."""
+    calc1 = Calculation(operator.add, 4, 6)
+    calc2 = Calculation(operator.mul, 5, 5)
 
     Calculations.add_calculation(calc1)
     Calculations.add_calculation(calc2)
 
     assert Calculations.get_history_length() == 2
-    assert Calculations.get_last_calculation().get_result() == 12  # 3 * 4
+    assert Calculations.get_last_calculation().get_result() == 25  # 5 * 5
 
 
 def test_clear_and_re_add():
-    """Test clearing history and adding new calculations."""
-    Calculations.add_calculation(Calculation(operator.sub, 9, 3))
+    """Test clearing history and adding new calculations again."""
+    Calculations.add_calculation(Calculation(operator.sub, 12, 6))
     Calculations.clear_history()
     assert len(Calculations.get_history()) == 0
 
-    calc = Calculation(operator.truediv, 8, 2)
+    calc = Calculation(operator.truediv, 18, 3)
     Calculations.add_calculation(calc)
     assert len(Calculations.get_history()) == 1
-    assert Calculations.get_history()[0].get_result() == 4.0
+    assert Calculations.get_history()[0].get_result() == 6.0

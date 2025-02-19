@@ -1,39 +1,39 @@
 """
-Advanced Calculator with calculation history.
+Advanced Calculator with functionality to maintain a history of calculations.
 """
 
 from Calculator.calculation import Calculation
 from Calculator.calculations import Calculations
 
 class Calculator:
-    """A calculator that supports arithmetic operations and stores history."""
+    """Performs arithmetic operations and tracks the results in history."""
 
     @staticmethod
     def add(a: float, b: float) -> float:
-        """Performs addition and stores in history."""
+        """Executes addition and appends the result to history."""
         calc = Calculation(lambda x, y: x + y, a, b)
         Calculations.add_calculation(calc)
         return calc.get_result()
 
     @staticmethod
     def subtract(a: float, b: float) -> float:
-        """Performs subtraction and stores in history."""
+        """Executes subtraction and appends the result to history."""
         calc = Calculation(lambda x, y: x - y, a, b)
         Calculations.add_calculation(calc)
         return calc.get_result()
 
     @staticmethod
     def multiply(a: float, b: float) -> float:
-        """Performs multiplication and stores in history."""
+        """Executes multiplication and appends the result to history."""
         calc = Calculation(lambda x, y: x * y, a, b)
         Calculations.add_calculation(calc)
         return calc.get_result()
 
     @staticmethod
     def divide(a: float, b: float) -> float:
-        """Performs division and stores in history. Raises an error if dividing by zero."""
+        """Executes division and appends the result to history. Raises ZeroDivisionError if b is zero."""
         if b == 0:
-            raise ZeroDivisionError("Cannot divide by zero")
+            raise ZeroDivisionError("Error: Attempted to divide by zero.")
         calc = Calculation(lambda x, y: x / y, a, b)
         Calculations.add_calculation(calc)
         return calc.get_result()
